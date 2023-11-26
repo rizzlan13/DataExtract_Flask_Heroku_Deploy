@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PDF Processing App - First File</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+    <script>
+        // Function to show the success message
+        function showSuccessMessage() {
+            // Get the paragraph element by its ID
+            var successMessage = document.getElementById('successMessage');
+            // Show the element
+            successMessage.style.display = 'block';
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to the PDF Processing App - First File</h1>
+        <form action="/process_first_file" method="POST">
+            <label for="folderPath">Enter Folder Path:</label>
+            <input type="text" id="folderPath" name="folder_path" placeholder="E.g., /path/to/folder">
+            <input type="submit" value="Submit">
+        </form>
+        {% if success_message %}
+            <p style="color: green;">{{ success_message }}</p>
+        {% endif %}
+        <!-- Back link to go to the index page -->
+        <a href="{{ url_for('index') }}" class="back-link">Back to Index</a>
+    </div>
+</body>
+</html>
