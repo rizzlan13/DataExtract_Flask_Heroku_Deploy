@@ -5,8 +5,48 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    <h1>Main Page</h1>
-    <a href="/every_single_file"><button>Every Single File</button></a>
-    <a href="/first_file"><button>First File</button></a>
+
+<!-- Main content container -->
+<div class="container-index blur"> <!-- Added 'blur' class here initially -->
+    <h1>Welcome to the PDF Processing App</h1>
+    <h2>Main Page</h2>
+    <br>
+    <a href="/every_single_file" class="button-link">Every Single File</a>
+    <a href="/first_file" class="button-link">First File</a>
+</div>
+
+<!-- Popup message container -->
+<div id="popupMessage" class="popup-container">
+    <span class="close-btn" onclick="closePopup()">&times;</span>
+    <p><u>Process Guidelines for the System</u></p>
+    <ul>
+        <li>Ensure that OCR has been applied to all the PDF documents.</li>
+        <li>Verify that all the documents adhere to the specified format.</li>
+        <li>This system and loader format are intended solely for use by the PAC Team.</li>
+    </ul>
+    <!-- Add more content or instructions as needed -->
+</div>
+
+<!-- JavaScript for popup -->
+<script>
+    // Function to close the popup
+    function closePopup() {
+        document.getElementById("popupMessage").style.display = "none";
+        document.querySelector('.container-index').classList.remove("blur"); // Remove blur class from main content
+    }
+
+    // Automatically close the popup after 5 seconds
+    setTimeout(function() {
+        document.getElementById("popupMessage").style.display = "none";
+        document.querySelector('.container-index').classList.remove("blur"); // Remove blur class from main content
+    }, 5000);
+
+    // Show the popup message on page load and add blur effect to the main content
+    window.onload = function() {
+        document.getElementById("popupMessage").style.display = "block";
+        document.querySelector('.container-index').classList.add("blur"); // Add blur class to main content
+    };
+</script>
+
 </body>
 </html>

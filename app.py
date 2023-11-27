@@ -1,5 +1,6 @@
 from flask import Flask, request, render_template, jsonify, redirect, url_for
 import os
+import re
 import fitz
 import tkinter as tk
 from tkinter import filedialog, messagebox
@@ -160,9 +161,10 @@ def draw_bounding_boxes_first(pdf_path):
             canvas.create_rectangle(*bbox, outline='red', width=2)  # Draw the final rectangle
 
             # Extract data based on bounding boxes
+            # Within your existing code after text extraction
             extracted_data = extract_data(pdf_path, bounding_boxes)
-            # cleaned_data = clean_extracted_text(extracted_data)
-            extracted_texts.append(extracted_data)
+            cleaned_data = clean_extracted_text(extracted_data)
+            extracted_texts.append(cleaned_data)
             label.config(text=f"The data for the file named {pdf_filename} was successfully extracted.")
 
             # Automatically close the window and proceed to the next PDF
@@ -183,24 +185,29 @@ def draw_bounding_boxes_first(pdf_path):
 
         window.mainloop()
 
-# Function to extract data from the bounding boxes
 def extract_data(pdf_path, bounding_boxes):
-    # Load the PDF
     pdf_document = fitz.open(pdf_path)
-    page = pdf_document.load_page(0)  # Load the first page (you can loop through pages)
+    page = pdf_document.load_page(0)
 
-    extracted_data = []  # List to store extracted data
-
-    # Iterate through each bounding box
+    extracted_data = []
     for bbox in bounding_boxes:
-        # Extract text within the bounding box
         x0, y0, x1, y1 = bbox
-        text_within_bbox = page.get_text("text", clip=(x0, y0, x1, y1))
+        
+        words = page.get_text("words", clip=(x0, y0, x1, y1))
+        words_method_text = " ".join(word[4] for word in words).strip()
 
-        # Append the extracted text to the list
-        extracted_data.append(text_within_bbox.strip())
+        extracted_data.append(words_method_text)
 
     return extracted_data
+
+def clean_extracted_text(extracted_text):
+    cleaned_text = []
+    for text in extracted_text:
+        # Remove unwanted characters or patterns
+        cleaned = re.sub(r"[^\w\s]", "", text)  # Remove non-alphanumeric characters except spaces
+        cleaned = re.sub(r"\s+", " ", cleaned).strip()  # Remove extra spaces and strip leading/trailing spaces
+        cleaned_text.append(cleaned)
+    return cleaned_text
 
 # Function to save extracted data to an Excel file
 def save_to_excel(pdf_filenames, extracted_texts, folder_path):
@@ -322,8 +329,12 @@ def process_every_single_file():
 
     # Display a popup message indicating extraction completion and where the files are saved
     message = f"All files have been successfully extracted and saved in the folder:\n{folder_path}"
-    
-    return render_template('result.html', message=message)
+    display_popup_message(message)
+
+    # Once processing is done, set the success message
+    success_message = "Data Successfully Extracted"
+
+    return render_template('first_file.html', success_message=success_message)
 
 @app.route('/first_file')
 def first_file():
@@ -333,7 +344,6 @@ def first_file():
 @app.route('/process_first_file', methods=['POST'])
 def process_first_file():
     folder_path = request.form['folder_path']
-    print(folder_path)
     pdf_paths = get_pdf_paths(folder_path)
 
     # Process the first PDF and draw bounding boxes

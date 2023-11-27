@@ -19,6 +19,14 @@ body {
     background-color: #fff;
 }
 
+.container-index {
+    text-align: center;
+    padding: 50px;
+    border-radius: 45px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+}
+
 h1 {
     margin-bottom: 20px;
 }
@@ -63,6 +71,63 @@ input[type="submit"]:hover {
     font-size: 14px; /* Adjust the font size as needed */
     transition: color 0.3s ease;
 }
+
 .back-link:hover {
     color: #0056b3;
 }
+
+.popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+/* Styling for the popup message */
+.popup-container {
+    position: relative;
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    border-radius: 10px;
+    /* border: 1px solid #000; */
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+.close-btn {
+    cursor: pointer;
+    float: right;
+}
+
+/* Blurred effect */
+.blur {
+    filter: blur(5px);
+    pointer-events: none;
+}
+
+/* Style the link to look like a button */
+.button-link {
+    display: inline-block;
+    padding: 10px 20px;
+    text-decoration: none;
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+  }
+  
+  /* Change background color on hover */
+  .button-link:hover {
+    background-color: #0056b3;
+  }
